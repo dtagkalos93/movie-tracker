@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from app.api.v1 import health
 
 app = FastAPI(
@@ -8,7 +9,7 @@ app = FastAPI(
     openapi_tags=[
         {"name": "Health", "description": "Health check endpoints"},
         # Add more tags later like "Movies", "Users", etc.
-    ]
+    ],
 )
 
 app.include_router(health.router)
