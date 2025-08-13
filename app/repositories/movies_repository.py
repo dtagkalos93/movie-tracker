@@ -1,9 +1,9 @@
 from app.models.movies import Movie
-from app.repositories.base_repository import BaseRepository
 
 
-class MoviesRepository(BaseRepository):
+class MoviesRepository:
+    movies: list[Movie] = []  # class-level attribute, shared across all instances
+
     def save(self, movie: Movie):
-        movie_length = len(self.movies)
-        movie.id = movie_length
-        self.movies.append(movie)
+        MoviesRepository.movies.append(movie)
+        print(self.movies)

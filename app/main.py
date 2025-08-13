@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.api.v1 import health
+from app.api.v1 import health, movies
 
 app = FastAPI(
     title="Movie Library",
@@ -13,3 +13,4 @@ app = FastAPI(
 )
 
 app.include_router(health.router)
+app.include_router(movies.router)
