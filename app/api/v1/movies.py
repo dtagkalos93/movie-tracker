@@ -1,4 +1,7 @@
-from fastapi import APIRouter
+from http import HTTPStatus
+from uuid import UUID
+
+from fastapi import APIRouter, HTTPException
 
 from app.dependencies import MOVIE_DEPENDENCY
 from app.schemas.movies import MovieIn, MovieOut
@@ -15,6 +18,16 @@ def store_movie(payload: MovieIn, service: MoviesService = MOVIE_DEPENDENCY) -> 
 
 @router.get("/movies", response_model=list[MovieOut])
 def retrieve_movies(
-    page: int = 0, limit: int = 25, service: MoviesService = MOVIE_DEPENDENCY
+    start: int = 0, limit: int = 25, service: MoviesService = MOVIE_DEPENDENCY
 ) -> list[MovieOut]:
-    return list()
+    return service.retrieve(start=start, limit=limit)
+
+
+@router.get("/movies/{movie_id}", response_model=MovieOut)
+def retrieve_move(
+    movie_id: UUID, service: MoviesService = MOVIE_DEPENDENCY
+) -> MovieOut:
+    movie = service.retrieve_by_id(movie_id)
+    if movie is None:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Item not found")
+    return service.retrieve_by_id(movie_id)
