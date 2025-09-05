@@ -29,5 +29,13 @@ def retrieve_move(
 ) -> MovieOut:
     movie = service.retrieve_by_id(movie_id)
     if movie is None:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Item not found")
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found")
     return service.retrieve_by_id(movie_id)
+
+
+@router.delete("/movies/{movie_id}", status_code=HTTPStatus.NO_CONTENT)
+def delete(movie_id: UUID, service: MoviesService = MOVIE_DEPENDENCY):
+    deleted = service.delete(movie_id)
+    if not deleted:
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Movie not found")
+    return {"message": "Movie deleted"}

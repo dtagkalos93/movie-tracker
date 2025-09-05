@@ -27,3 +27,6 @@ class MoviesService:
             return None
 
         return MovieOut(**movie.model_dump())
+
+    def delete(self, movie_id: UUID) -> bool:
+        return self._movies_repository.delete(movie_id)
